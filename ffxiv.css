@@ -1,0 +1,33 @@
+/* MIXINS */
+/* GENERIC ELEMENTS */
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+html {
+  align-items: stretch;
+  display: flex;
+  font-size: 10px;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+body {
+  align-items: stretch;
+  font-size: 1.6rem;
+  display: flex;
+  flex: 0 0 100%;
+  margin: 0px;
+  overflow: hidden;
+}
+/* FRAMEWORK ELEMENTS */
+.viewport {
+  align-items: stretch;
+  display: flex;
+  flex: 0 0 100%;
+  position: relative;
+}
+.page,
+.overlay {
+  width: 25%;
+}
