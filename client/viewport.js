@@ -8,6 +8,7 @@ App.viewport = React.createClass({
 
     getInitialState: function () {
         return {
+            pane: this.props.job ? 'gear' : 'home',
             slot: '',
             gear: this.retrieveGear(this.props.gear)
         };
@@ -19,6 +20,7 @@ App.viewport = React.createClass({
 
         if (!nextProps.job) {
             this.setState({
+                pane: 'home',
                 slot: '',
                 gear: []
             });
@@ -26,6 +28,7 @@ App.viewport = React.createClass({
             return (gear[index] ? gear[index].nid : 0) === nid;
         }, this)) {
             this.setState({
+                pane: 'gear',
                 slot: '',
                 gear: this.retrieveGear(nextProps.gear)
             });
@@ -52,27 +55,44 @@ App.viewport = React.createClass({
 
     render: function () {
         var job = this.props.job;
+        var pane = this.state.pane;
         var slot = this.state.slot;
         var gear = this.state.gear;
 
         return React.DOM.div({
             className: 'viewport',
             children: [
-                React.DOM.div({
-                    className: 'overlay overlay-home' + (job ? '' : ' active'),
-                    children: this.generateButtons()
+                React.DOM.header({
+                    children: React.DOM.div({
+                        className: 'home-link',
+                        children: 'home',
+                        onClick: this.handleClickOnHome
+                    })
                 }),
-                React.DOM.div({
-                    className: 'overlay overlay-filters',
-                    children: 'filters'
-                }),
-                React.DOM.div({
-                    className: 'overlay overlay-slot' + (slot ? ' active' : ''),
-                    children: slot ? this.generateItems(slot) : 'Click on a slot to select items.'
-                }),
-                React.DOM.div({
-                    className: 'page',
-                    children: this.generateSlots(gear)
+                React.DOM.article({
+                    className: 'active-pane-' + pane,
+                    children: [
+                        React.DOM.div({
+                            className: 'pane pane-home',
+                            children: this.generateButtons()
+                        }),
+                        React.DOM.div({
+                            className: 'pane pane-stats',
+                            children: job ? this.generateStats(job, gear) : 'Select a job.'
+                        }),
+                        React.DOM.div({
+                            className: 'pane pane-gear',
+                            children: this.generateSlots(gear)
+                        }),
+                        React.DOM.div({
+                            className: 'pane pane-slot',
+                            children: slot ? this.generateItems(slot) : 'Click on a slot to select items.'
+                        }),
+                        React.DOM.div({
+                            className: 'pane pane-filters',
+                            children: 'filters'
+                        })
+                    ]
                 })
             ]
         });
@@ -120,13 +140,89 @@ App.viewport = React.createClass({
             var item = gear[index];
 
             return React.DOM.div({
-                className: 'slot slot-' + slot.replace('_', '-'),
-                children: ['slot:', slot, (item ? item.name : null)].join(' '),
+                className: 'slot slot-' + slot.replace(/_/g, '-') + (item ? ' slot-filled slot-' + item.rarity : ''),
+                children: [
+                    React.DOM.span({
+                        className: 'slot-name',
+                        children: slot.replace(/_/g, ' ')
+                    }),
+                    React.DOM.span({
+                        className: 'slot-item-name',
+                        children: (item ? item.name : null)
+                    }),
+                    React.DOM.span({
+                        className: 'slot-item-stats',
+                        children: (item && item.stats ? this.generateStatTags(Object.keys(item.stats)) : null)
+                    }),
+                    React.DOM.span({
+                        className: 'slot-item-ilvl',
+                        children: (item ? 'ilvl ' + item.ilvl : null)
+                    }),
+                    React.DOM.span({
+                        className: 'slot-item-image',
+                        children: (item ? 'img' : null)
+                    })
+                ],
                 onClick: this.handleClickOnSlot.bind(this, slot)
             });
         }, this);
 
         return components;
+    },
+
+    generateStats: function (job, gear) {
+        var stats = job.stats;
+        var total = {};
+        var components = [];
+
+        stats.forEach(function (stat) {
+            total[stat] = 0;
+        }, this);
+
+        gear.forEach(function (item) {
+            var itemStats;
+
+            if (item) {
+                itemStats = item.stats;
+
+                for (stat in itemStats) {
+                    if (total.hasOwnProperty(stat)) {
+                        total[stat] += itemStats[stat];
+                    }
+                }
+            }
+        }, this);
+
+        for (stat in total) {
+            if (total.hasOwnProperty(stat)) {
+                components.push(React.DOM.dl({
+                    className: 'stat',
+                    children: [
+                        React.DOM.dt({
+                            className: 'stat-label',
+                            children: stat.replace(/_/g, ' ')
+                        }),
+                        React.DOM.dd({
+                            className: 'stat-value',
+                            children: total[stat]
+                        })
+                    ]
+                }));
+            }
+        }
+
+        return components;
+    },
+
+    generateStatTags: function (stats) {
+        var statMap = Constants.stats;
+        var tags;
+
+        tags = stats.map(function (stat) {
+            return statMap[stat] || null;
+        }, this);
+
+        return tags;
     },
 
     handleClickOnButton: function (job, event) {
@@ -137,9 +233,14 @@ App.viewport = React.createClass({
         }, this).shift();
 
         this.setState({
+            pane: 'gear',
             slot: '',
             gear: [null, null, null, null, null, null, null, null, null, null, null, null, null, soul]
         });
+    },
+
+    handleClickOnHome: function (event) {
+        this.setLocation();
     },
 
     handleClickOnItem: function (item, slot, event) {
@@ -156,12 +257,15 @@ App.viewport = React.createClass({
         }
 
         this.setState({
+            pane: 'gear',
+            slot: '',
             gear: nextGear
         });
     },
 
     handleClickOnSlot: function (slot, event) {
         this.setState({
+            pane: 'slot',
             slot: slot
         });
     },

@@ -8,6 +8,20 @@ transform()
     transform: arguments
     -webkit-transform: arguments
 
+/* VARIABLES */
+
+$color-ichi = rgb(244, 247, 248)
+
+$color-border = rgb(205, 205, 205)
+$color-header = rgb(234, 239, 242)
+$color-header-text = rgb(77, 78, 83)
+$color-pane = rgb(255, 255, 255)
+$color-pane-text = rgb(77, 78, 83)
+
+$color-scarce = #c0ffc0
+$color-rare = rgb(89, 144, 255)
+$color-relic = #b38cff
+
 /* GENERIC ELEMENTS */
 
 *
@@ -23,11 +37,24 @@ html
 
 body
     align-items: stretch
-    font-size: 1.6rem
     display: flex
     flex: 0 0 100%
+    font-family: lato
+    font-size: 1.6rem
+    font-weight: 300
+    line-height: 1
     margin: 0px
     overflow: hidden
+
+header
+    background-color: $color-header
+    color: $color-header-text
+    height: 40px
+    left: 0px
+    overflow: hidden
+    position: fixed
+    top: 0px
+    width: 100%
 
 /* FRAMEWORK ELEMENTS */
 
@@ -35,7 +62,130 @@ body
     align-items: stretch
     display: flex
     flex: 0 0 100%
-    position: relative
+    overflow: hidden
 
-.page, .overlay
-    width: 25%
+article
+    align-items: stretch
+    border-top: 40px solid transparent
+    display: flex
+    flex: 0 0 100%
+    position: relative
+    transition: all 0.4s ease-in-out
+
+    &.active-pane-gear
+        transform: translateX(-100%)
+
+    &.active-pane-slot
+        transform: translateX(-150%)
+
+.pane
+    background-color: $color-pane
+    color: $color-pane-text
+    flex: 0 0 50%
+    overflow-y: auto
+    padding: 1rem
+
+.pane-home
+    background-color: rgb(235, 235, 235)
+    color: rgb(50, 50, 50)
+    flex: 0 0 100%
+    font-weight: 300
+
+/* STAT PANE */
+
+.stat
+    border-bottom: 1px solid $color-border
+    display: flex
+    margin: 0px
+
+    &:nth-last-of-type(1)
+        border-bottom-width: 0px
+
+.stat-label
+    flex: 0 0 40%
+    padding: 1.6rem
+    text-transform: capitalize
+
+.stat-value
+    flex: 1 0 50%
+    margin: 0px
+    padding: 1.6rem
+    text-align: center
+
+/* GEAR PANE */
+
+.slot
+    align-items: center
+    border: 1px dashed $color-border
+    display: flex
+    margin-bottom: 1rem
+    min-height: 5rem
+    padding: 0px 1rem
+
+    span
+        display: none
+
+    .slot-name
+        display: block
+        text-transform: capitalize
+
+    .slot-item-name
+        flex: 1 0 auto
+        margin-right: 1rem
+
+    .slot-item-stats
+        font-size: 1.3rem
+        line-height: 1.6rem
+        text-transform: uppercase
+
+        span
+            letter-spacing: 0.1rem
+            margin-right: 1rem
+
+            &:nth-last-of-type(1)
+                border-right: 1px solid rgba($color-pane-text, 0.5)
+                padding-right: 1rem
+
+    .slot-item-ilvl
+        font-size: 1.3rem
+        line-height: 1.6rem
+        margin-right: 1rem
+        text-transform: uppercase
+
+    .slot-item-image
+        background-image: linear-gradient(135deg, rgb(220, 220, 220), rgb(190, 190, 190))
+        border: 1px dashed $color-border
+        border-radius: 0.3rem
+        display: none
+        height: 4rem
+        overflow: hidden
+        padding-left: 4rem
+        width: 4rem
+
+    &.slot-filled
+        background-color: $color-ichi
+        border-style: solid
+
+        span
+            display: block
+
+        .slot-name
+            display: none
+
+        .slot-item-stats
+            display: flex
+
+    &.slot-common
+        border-color: $color-border
+
+    &.slot-scarce
+        background-image: linear-gradient(rgba($color-scarce, 0.15), rgba($color-scarce, 0.25))
+        border-color: $color-scarce
+
+    &.slot-rare
+        background-image: linear-gradient(rgba($color-rare, 0.15), rgba($color-rare, 0.25))
+        border-color: $color-rare
+
+    &.slot-relic
+        background-image: linear-gradient(rgba($color-relic, 0.15), rgba($color-relic, 0.25))
+        border-color: $color-relic
