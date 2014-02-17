@@ -129,6 +129,12 @@ App.viewport = React.createClass({
             });
         }, this);
 
+        components.unshift(React.DOM.div({
+            className: 'item',
+            children: 'None',
+            onClick: this.handleClickOnItem.bind(this, null, slot)
+        }));
+
         return components;
     },
 
@@ -171,9 +177,33 @@ App.viewport = React.createClass({
     },
 
     generateStats: function (job, gear) {
+        var statMap = Constants.stats;
         var stats = job.stats;
+        var bonuses = job.bonuses;
         var total = {};
-        var components = [];
+        var components;
+
+        components = [React.DOM.dl({
+            className: 'stat stat-header',
+            children: [
+                React.DOM.dt({
+                    className: 'stat-label',
+                    children: 'attribute'
+                }),
+                React.DOM.dd({
+                    className: 'stat-value stat-value-from-character',
+                    children: 'base'
+                }),
+                React.DOM.dd({
+                    className: 'stat-value stat-value-from-gear',
+                    children: 'gear'
+                }),
+                React.DOM.dd({
+                    className: 'stat-value stat-value-from-all',
+                    children: 'total'
+                })
+            ]
+        })];
 
         stats.forEach(function (stat) {
             total[stat] = 0;
@@ -194,7 +224,14 @@ App.viewport = React.createClass({
         }, this);
 
         for (stat in total) {
+            var baseStat = statMap[stat];
+            var characterValue;
+            var gearValue;
+
             if (total.hasOwnProperty(stat)) {
+                characterValue = baseStat ? baseStat.base + (bonuses[stat] || 0) : 0;
+                gearValue = total[stat];
+
                 components.push(React.DOM.dl({
                     className: 'stat',
                     children: [
@@ -203,8 +240,16 @@ App.viewport = React.createClass({
                             children: stat.replace(/_/g, ' ')
                         }),
                         React.DOM.dd({
-                            className: 'stat-value',
-                            children: total[stat]
+                            className: 'stat-value stat-value-from-character',
+                            children: characterValue
+                        }),
+                        React.DOM.dd({
+                            className: 'stat-value stat-value-from-gear',
+                            children: gearValue
+                        }),
+                        React.DOM.dd({
+                            className: 'stat-value stat-value-from-all',
+                            children: characterValue + gearValue
                         })
                     ]
                 }));
@@ -218,8 +263,10 @@ App.viewport = React.createClass({
         var statMap = Constants.stats;
         var tags;
 
-        tags = stats.map(function (stat) {
-            return statMap[stat] || null;
+        tags = stats.map(function (key) {
+            var stat = statMap[key];
+
+            return stat && stat.type === 'secondary' ? stat.abbr : null;
         }, this);
 
         return tags;
