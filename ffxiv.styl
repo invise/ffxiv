@@ -8,16 +8,28 @@ transform()
     transform: arguments
     -webkit-transform: arguments
 
+center-border(angle, color, a, b)
+    linear-gradient(
+        angle,
+        transparent,
+        transparent a,
+        color a,
+        color b,
+        transparent b,
+        transparent
+    )
+
 /* VARIABLES */
 
 $color-ichi = rgb(244, 247, 248)
 $color-ni = rgb(233, 238, 241)
 
+$color-icon = rgb(77, 78, 83)
+$color-text = rgb(77, 78, 83)
+
 $color-border = rgb(205, 205, 205)
-$color-header = rgb(234, 239, 242)
-$color-header-text = rgb(77, 78, 83)
+$color-header = $color-ni
 $color-pane = rgb(255, 255, 255)
-$color-pane-text = rgb(77, 78, 83)
 
 $color-scarce = #c0ffc0
 $color-rare = rgb(89, 144, 255)
@@ -50,7 +62,7 @@ body
 header
     align-items: center
     background-color: $color-header
-    color: $color-header-text
+    color: $color-text
     display: flex
     height: 40px
     left: 0px
@@ -75,7 +87,7 @@ header
 
 article
     align-items: stretch
-    border-top: 40px solid transparent
+    border-top: 4rem solid transparent
     display: flex
     flex: 0 0 100%
     position: relative
@@ -89,7 +101,7 @@ article
 
 .pane
     background-color: $color-pane
-    color: $color-pane-text
+    color: $color-text
     flex: 0 0 50%
     overflow-y: auto
     padding: 1rem
@@ -97,7 +109,93 @@ article
 /* HOME PANE */
 
 .pane-home
+    align-items: center
+    display: flex
     flex: 0 0 100%
+    justify-content: center
+
+    .jobs
+        display: flex
+        flex-wrap: wrap
+        padding: 2rem
+        position: relative
+        width: 40rem
+
+.job
+    align-content: center
+    align-items: center
+    background-color: $color-ni
+    border-radius: 0.3rem
+    cursor: pointer
+    display: flex
+    flex-wrap: wrap
+    height: 6.8rem
+    justify-content: center
+    margin: 1.8rem 0px
+    padding: 0px 3rem
+    position: relative
+    text-align: center
+    width: 12rem
+
+    .job-inner
+        font-size: 1.5rem
+        font-weight: 400
+        height: 5rem
+        line-height: 2rem
+        padding-top: 3rem
+        position: relative
+        text-transform: uppercase
+        width: 6rem
+        z-index: 1
+
+    &::before,
+    &::after
+        background-color: $color-ni
+        border-radius: 0.3rem
+        box-sizing: border-box
+        content: ""
+        display: block
+        left: 0px
+        height: 6.8rem
+        overflow: hidden
+        position: absolute
+        top: 0px
+        transform: rotate(120deg)
+        width: 12rem
+
+    &::after
+        transform: rotate(-120deg)
+
+    .before,
+    .after
+        display: none
+
+        .image
+            background-attachment: scroll
+            background-position: 50% 50%
+            background-repeat: no-repeat
+            background-size: 192px 192px
+            height: 14rem
+            transform: rotate(-120deg) translateX(3.6rem) translateY(0.9rem)
+            width: 14rem
+
+    .after
+        transform: rotate(-120deg)
+
+        .image
+            transform: rotate(120deg) translateX(-2.6rem) translateY(2.7rem)
+
+    &:nth-of-type(8n-7)
+        margin-left: 12rem
+        margin-right: 12rem
+
+    &:nth-of-type(5n-3)
+        margin-left: 6rem
+
+    &:nth-of-type(5n-2)
+        margin-right: 6rem
+
+@import 'icons'
 
 /* STAT PANE */
 
@@ -147,7 +245,7 @@ article
         margin-right: 1rem
 
     .slot-item-stats
-        border-right: 1px solid rgba($color-pane-text, 0.5)
+        border-right: 1px solid rgba($color-text, 0.5)
         font-size: 1.3rem
         line-height: 1.6rem
         text-transform: uppercase

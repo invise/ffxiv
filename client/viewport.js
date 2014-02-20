@@ -74,7 +74,10 @@ App.viewport = React.createClass({
                     children: [
                         React.DOM.div({
                             className: 'pane pane-home',
-                            children: this.generateButtons()
+                            children: React.DOM.div({
+                                className: 'jobs',
+                                children: this.generateButtons()
+                            })
                         }),
                         React.DOM.div({
                             className: 'pane pane-stats',
@@ -104,7 +107,20 @@ App.viewport = React.createClass({
 
         components = jobs.map(function (job) {
             return React.DOM.div({
-                children: job.abbr,
+                className: 'job job-' + job.abbr,
+                children: React.DOM.div({
+                    className: 'job-inner',
+                    children: [
+                        React.DOM.div({
+                            className: 'job-name',
+                            children: job.abbr
+                        }),
+                        React.DOM.div({
+                            className: 'job-icon job-icon-' + job.abbr,
+                            children: React.DOM.span()
+                        })
+                    ]
+                }),
                 onClick: this.handleClickOnButton.bind(this, job)
             });
         }, this);

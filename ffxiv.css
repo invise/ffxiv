@@ -26,7 +26,7 @@ body {
 }
 header {
   align-items: center;
-  background-color: #eaeff2;
+  background-color: #e9eef1;
   color: #4d4e53;
   display: flex;
   height: 40px;
@@ -51,7 +51,7 @@ header {
 }
 article {
   align-items: stretch;
-  border-top: 40px solid transparent;
+  border-top: 4rem solid transparent;
   display: flex;
   flex: 0 0 100%;
   position: relative;
@@ -74,7 +74,358 @@ article.active-pane-slot {
 }
 /* HOME PANE */
 .pane-home {
+  align-items: center;
+  display: flex;
   flex: 0 0 100%;
+  justify-content: center;
+}
+.pane-home .jobs {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 2rem;
+  position: relative;
+  width: 40rem;
+}
+.job {
+  align-content: center;
+  align-items: center;
+  background-color: #e9eef1;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  height: 6.8rem;
+  justify-content: center;
+  margin: 1.8rem 0px;
+  padding: 0px 3rem;
+  position: relative;
+  text-align: center;
+  width: 12rem;
+}
+.job .job-inner {
+  font-size: 1.5rem;
+  font-weight: 400;
+  height: 5rem;
+  line-height: 2rem;
+  padding-top: 3rem;
+  position: relative;
+  text-transform: uppercase;
+  width: 6rem;
+  z-index: 1;
+}
+.job::before,
+.job::after {
+  background-color: #e9eef1;
+  border-radius: 0.3rem;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  content: "";
+  display: block;
+  left: 0px;
+  height: 6.8rem;
+  overflow: hidden;
+  position: absolute;
+  top: 0px;
+  transform: rotate(120deg);
+  -webkit-transform: rotate(120deg);
+  width: 12rem;
+}
+.job::after {
+  transform: rotate(-120deg);
+  -webkit-transform: rotate(-120deg);
+}
+.job .before,
+.job .after {
+  display: none;
+}
+.job .before .image,
+.job .after .image {
+  background-attachment: scroll;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: 192px 192px;
+  height: 14rem;
+  transform: rotate(-120deg) translateX(3.6rem) translateY(0.9rem);
+  -webkit-transform: rotate(-120deg) translateX(3.6rem) translateY(0.9rem);
+  width: 14rem;
+}
+.job .after {
+  transform: rotate(-120deg);
+  -webkit-transform: rotate(-120deg);
+}
+.job .after .image {
+  transform: rotate(120deg) translateX(-2.6rem) translateY(2.7rem);
+  -webkit-transform: rotate(120deg) translateX(-2.6rem) translateY(2.7rem);
+}
+.job:nth-of-type(8n-7) {
+  margin-left: 12rem;
+  margin-right: 12rem;
+}
+.job:nth-of-type(5n-3) {
+  margin-left: 6rem;
+}
+.job:nth-of-type(5n-2) {
+  margin-right: 6rem;
+}
+.job .job-icon {
+  height: 2rem;
+  left: 2rem;
+  overflow: hidden;
+  position: absolute;
+  top: 0px;
+  width: 2rem;
+}
+.job .job-icon::before,
+.job .job-icon::after {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  content: "";
+  display: block;
+  position: absolute;
+}
+.job .job-icon-pld {
+  background-image: linear-gradient(90deg, transparent, transparent 0.9rem, #4d4e53 0.9rem, #4d4e53 1.1rem, transparent 1.1rem, transparent);
+  height: 2.2rem;
+  top: 0.4rem;
+}
+.job .job-icon-pld::before {
+  border: 2px solid #4d4e53;
+  border-radius: 50%;
+  height: 4.2rem;
+  left: 0px;
+  top: -2rem;
+  width: 2rem;
+}
+.job .job-icon-pld::after {
+  border-top: 0.2rem solid #4d4e53;
+  height: 1.8rem;
+  left: 0.1rem;
+  width: 1.8rem;
+  top: 0.1rem;
+}
+.job .job-icon-mnk {
+  left: 1.5rem;
+  height: 3rem;
+  top: 0.2rem;
+  width: 3rem;
+}
+.job .job-icon-mnk::before {
+  background-image: linear-gradient(90deg, transparent, transparent 0.5rem, #4d4e53 0.5rem, #4d4e53 0.7rem, transparent 0.7rem, transparent);
+  border-color: #4d4e53;
+  border-style: solid;
+  border-width: 0px 0.2rem;
+  height: 1.6rem;
+  left: 0.7rem;
+  top: 0.4rem;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  width: 1.6rem;
+}
+.job .job-icon-mnk::after {
+  content: none;
+}
+.job .job-icon-war {
+  border-radius: 2.2rem/2.6rem;
+  box-shadow: inset 0px 0px 0px 0.2rem #4d4e53;
+  height: 2.2rem;
+  left: 1.7rem;
+  top: 0.4rem;
+  width: 2.6rem;
+}
+.job .job-icon-war::before,
+.job .job-icon-war::after {
+  background-color: #e9eef1;
+  border: 0.2rem solid #4d4e53;
+  border-radius: 1.6rem;
+  height: 1.6rem;
+  left: 0.5rem;
+  top: -0.6rem;
+  width: 1.6rem;
+}
+.job .job-icon-war::after {
+  top: 1.3rem;
+}
+.job .job-icon-drg {
+  background-image: linear-gradient(90deg, transparent, transparent 4px, #4d4e53 4px, #4d4e53 6px, transparent 6px, transparent), linear-gradient(90deg, transparent, transparent 10px, #4d4e53 10px, #4d4e53 12px, transparent 12px, transparent);
+  border-bottom: 0.2rem solid #4d4e53;
+  height: 1rem;
+  left: 2.2rem;
+  overflow: visible;
+  top: 0.2rem;
+  width: 1.6rem;
+}
+.job .job-icon-drg::before,
+.job .job-icon-drg::after {
+  height: 2rem;
+  top: 0.4rem;
+  width: 1.6rem;
+}
+.job .job-icon-drg::before {
+  border-left: 0.2rem solid #4d4e53;
+  left: 0.3rem;
+  transform: rotate(-22.5deg);
+  -webkit-transform: rotate(-22.5deg);
+}
+.job .job-icon-drg::after {
+  border-right: 0.2rem solid #4d4e53;
+  left: -0.3rem;
+  transform: rotate(22.5deg);
+  -webkit-transform: rotate(22.5deg);
+}
+.job .job-icon-brd {
+  border-color: #4d4e53;
+  border-style: solid;
+  border-radius: 0px 0px 1.2rem 1.2rem;
+  border-width: 0.2rem 0.2rem 0.2rem 0px;
+  height: 2.4rem;
+  left: 2.1rem;
+  top: 0.3rem;
+  width: 1.8rem;
+}
+.job .job-icon-brd::before {
+  background-image: linear-gradient(90deg, transparent, transparent 0.2rem, #4d4e53 0.2rem, #4d4e53 0.4rem, transparent 0.4rem, transparent);
+  border-color: #4d4e53;
+  border-style: solid;
+  border-width: 0px 0.2rem;
+  height: 1.2rem;
+  left: 0.3rem;
+  top: 0.4rem;
+  width: 1rem;
+}
+.job .job-icon-brd::after {
+  content: none;
+}
+.job .job-icon-whm {
+  border-right: 0.2rem solid #4d4e53;
+  height: 1.3rem;
+  overflow: visible;
+  top: 1.4rem;
+  width: 1.2rem;
+}
+.job .job-icon-whm::before {
+  border-color: #4d4e53;
+  border-style: solid;
+  border-width: 0px 0.2rem 0.2rem 0px;
+  border-radius: 12px;
+  height: 12px;
+  left: 0.5rem;
+  top: -1.1rem;
+  width: 12px;
+}
+.job .job-icon-whm::after {
+  border: 0.2rem solid #4d4e53;
+  border-radius: 0.2rem;
+  height: 0.4rem;
+  left: 0.8rem;
+  top: -0.8rem;
+  width: 0.4rem;
+}
+.job .job-icon-blm {
+  height: 3rem;
+  left: 2.2rem;
+  top: -0.1rem;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  width: 1.6rem;
+}
+.job .job-icon-blm span {
+  border: 0.2rem solid #4d4e53;
+  border-radius: 1.6rem;
+  display: block;
+  height: 1.6rem;
+  left: 0px;
+  position: absolute;
+  top: 1.4rem;
+  width: 1.6rem;
+}
+.job .job-icon-blm span::before {
+  border-color: #4d4e53;
+  border-style: solid;
+  border-width: 0px 0.2rem;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  content: "";
+  display: block;
+  height: 1.2rem;
+  left: -0.2rem;
+  position: absolute;
+  top: -0.5rem;
+  width: 1.6rem;
+}
+.job .job-icon-blm::before,
+.job .job-icon-blm::after {
+  border: 0.2rem solid #4d4e53;
+  border-radius: 0px 0px 50% 50%;
+  height: 2.4rem;
+  left: -0.3rem;
+  top: -1rem;
+  width: 1.2rem;
+}
+.job .job-icon-blm::after {
+  left: 0.7rem;
+}
+.job .job-icon-smn {
+  border-bottom: 2px solid #4d4e53;
+  border-radius: 2.6rem;
+  height: 2.6rem;
+  left: 1.3rem;
+  transform: rotate(-37.5deg);
+  -webkit-transform: rotate(-37.5deg);
+  width: 2.6rem;
+}
+.job .job-icon-smn::before,
+.job .job-icon-smn::after {
+  border-color: #4d4e53;
+  border-style: solid;
+  border-width: 0px 0px 0px 0.2rem;
+  height: 2rem;
+  left: 0.8rem;
+  top: 0.4rem;
+  transform: rotate(22.5deg);
+  -webkit-transform: rotate(22.5deg);
+  width: 1.6rem;
+}
+.job .job-icon-smn::after {
+  border-width: 0px 0.2rem 0px 0px;
+  left: 0.2rem;
+  transform: rotate(-22.5deg);
+  -webkit-transform: rotate(-22.5deg);
+}
+.job .job-icon-sch {
+  border-top: 2px solid #4d4e53;
+  left: 23px;
+  overflow: visible;
+  top: 0.8rem;
+  width: 14px;
+}
+.job .job-icon-sch::before,
+.job .job-icon-sch::after {
+  border: 2px solid #4d4e53;
+  border-radius: 14px;
+  height: 14px;
+  left: -8px;
+  top: -2px;
+  width: 14px;
+}
+.job .job-icon-sch::after {
+  left: 8px;
+}
+.job .job-icon-sch span::before,
+.job .job-icon-sch span::after {
+  background-color: #e9eef1;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  content: "";
+  display: block;
+  height: 4px;
+  left: -8px;
+  position: absolute;
+  top: -2px;
+  width: 6px;
+  z-index: 1;
+}
+.job .job-icon-sch span::after {
+  left: 16px;
 }
 /* STAT PANE */
 .stat {
