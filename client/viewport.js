@@ -9,6 +9,7 @@ App.viewport = React.createClass({
     getInitialState: function () {
         return {
             pane: this.props.job ? 'gear' : 'home',
+            race: Constants.races[6],
             slot: '',
             gear: this.retrieveGear(this.props.gear)
         };
@@ -76,20 +77,51 @@ App.viewport = React.createClass({
                             className: 'pane pane-home',
                             children: React.DOM.div({
                                 className: 'jobs',
-                                children: this.generateButtons()
+                                children: this.generateJobs()
                             })
                         }),
                         React.DOM.div({
                             className: 'pane pane-stats',
-                            children: job ? this.generateStats(job, gear) : 'Select a job.'
+                            children: [
+                                React.DOM.h2({
+                                    className: 'pane-title',
+                                    children: 'Attributes'
+                                }),
+                                React.DOM.div({
+                                    className: 'stats',
+                                    children: job ? this.generateStats(job, gear) : 'Select a job first.'
+                                }),
+                                React.DOM.div({
+                                    className: 'races',
+                                    children: this.generateRaces()
+                                })
+                            ]
                         }),
                         React.DOM.div({
                             className: 'pane pane-gear',
-                            children: this.generateSlots(gear)
+                            children: [
+                                React.DOM.h2({
+                                    className: 'pane-title',
+                                    children: 'Gear'
+                                }),
+                                React.DOM.div({
+                                    className: 'gear',
+                                    children: this.generateSlots(gear)
+                                })
+                            ]
                         }),
                         React.DOM.div({
                             className: 'pane pane-slot',
-                            children: slot ? this.generateItems(slot) : 'Click on a slot to select items.'
+                            children: [
+                                React.DOM.h2({
+                                    className: 'pane-title',
+                                    children: 'Slot' + (slot ? ' — ' + slot.replace(/_/g, ' ') : '')
+                                }),
+                                React.DOM.div({
+                                    className: 'items',
+                                    children: slot ? this.generateItems(slot, gear) : 'Click on a slot to view items.'
+                                })
+                            ]
                         }),
                         React.DOM.div({
                             className: 'pane pane-filters',
@@ -101,7 +133,89 @@ App.viewport = React.createClass({
         });
     },
 
-    generateButtons: function () {
+    generateItems: function (slot, gear) {
+        var job = this.props.job.abbr;
+        var slotIndex = Object.keys(Constants.items).indexOf(slot);
+        var items;
+        var components;
+
+        items = Constants.items[slot].filter(function (item) {
+            return item.all_jobs || (item.jobs && item.jobs.indexOf(job) !== -1);
+        }, this);
+
+        components = items.map(function (item) {
+            var activeItem = gear[slotIndex];
+
+            return React.DOM.div({
+                className: 'item item-' + item.rarity + (activeItem && activeItem.sid === item.sid ? ' active' : ''),
+                children: [
+                    React.DOM.div({
+                        className: 'item-image',
+                        children: 'image'
+                    }),
+                    React.DOM.div({
+                        className: 'item-name',
+                        children: item.name
+                    }),
+                    React.DOM.div({
+                        className: 'item-ilvl',
+                        children: [
+                            item.hasOwnProperty('unique') ? 'Unique' : null,
+                            'Item Level ' + item.ilvl
+                        ]
+                    }),
+                    React.DOM.div({
+                        className: 'item-stats item-stats-' + job,
+                        children: this.generateItemStats(item.stats)
+                    })
+                ],
+                onClick: this.handleClickOnItem.bind(this, item, slot)
+            });
+        }, this);
+
+        components.unshift(React.DOM.div({
+            className: 'item',
+            children: 'None',
+            onClick: this.handleClickOnItem.bind(this, null, slot)
+        }));
+
+        return components;
+    },
+
+    generateItemStats: function (stats) {
+        var components = [];
+        var majorStats;
+
+        if (stats) {
+            majorStats = [
+                'physical_damage', 'magic_damage', 'auto_attack', 'delay',
+                'block_strength', 'block_rate', 'defense', 'magic_defense'
+            ];
+
+            for (stat in stats) {
+                var isMajor = majorStats.indexOf(stat) !== -1;
+
+                components.push(
+                    React.DOM.dl({
+                        className: 'item-stat' + (isMajor ? ' major item-stat-' + stat.replace(/_/g, '-') : ''),
+                        children: [
+                            React.DOM.dt({
+                                className: 'item-stat-label',
+                                children: stat.replace(/_/g, ' ')
+                            }), React.DOM.dd({
+                                className: 'item-stat-value',
+                                children: stats[stat]
+                            })
+                        ]
+                    })
+                );
+            }
+        }
+
+        return components;
+    },
+
+    generateJobs: function () {
         var jobs = Constants.jobs;
         var components;
 
@@ -128,41 +242,41 @@ App.viewport = React.createClass({
         return components;
     },
 
-    generateItems: function (slot) {
-        var job = this.props.job.abbr;
-        var items;
+    generateRaces: function () {
+        var races = Constants.races;
+        var activeRace = this.state.race;
         var components;
 
-        items = Constants.items[slot].filter(function (item) {
-            return item.all_jobs || (item.jobs && item.jobs.indexOf(job) !== -1);
-        }, this);
-
-        components = items.map(function (item) {
+        components = races.map(function (race) {
             return React.DOM.div({
-                className: 'item',
-                children: item.name,
-                onClick: this.handleClickOnItem.bind(this, item, slot)
+                className: [
+                    'race race-',
+                    race.name.replace(/\s/g, '-').toLowerCase(),
+                    (race.name === activeRace.name ? ' active' : '')
+                ].join(''),
+                children: race.name,
+                onClick: this.handleClickOnRace.bind(this, race)
             });
         }, this);
-
-        components.unshift(React.DOM.div({
-            className: 'item',
-            children: 'None',
-            onClick: this.handleClickOnItem.bind(this, null, slot)
-        }));
 
         return components;
     },
 
     generateSlots: function (gear) {
         var slots = Object.keys(Constants.items);
+        var activeSlot = this.state.slot;
         var components;
 
         components = slots.map(function (slot, index) {
             var item = gear[index];
 
             return React.DOM.div({
-                className: 'slot slot-' + slot.replace(/_/g, '-') + (item ? ' slot-filled slot-' + item.rarity : ''),
+                className: [
+                    'slot slot-',
+                    slot.replace(/_/g, '-'),
+                    (item ? ' slot-filled slot-' + item.rarity : ''),
+                    (activeSlot && activeSlot === slot ? ' active' : '')
+                ].join(''),
                 children: [
                     React.DOM.span({
                         className: 'slot-name',
@@ -193,6 +307,7 @@ App.viewport = React.createClass({
     },
 
     generateStats: function (job, gear) {
+        var race = this.state.race;
         var statMap = Constants.stats;
         var stats = job.stats;
         var bonuses = job.bonuses;
@@ -245,7 +360,7 @@ App.viewport = React.createClass({
             var gearValue;
 
             if (total.hasOwnProperty(stat)) {
-                characterValue = baseStat ? baseStat.base + (bonuses[stat] || 0) : 0;
+                characterValue = baseStat ? baseStat.base + (bonuses[stat] || 0) + (race.bonuses[stat] || 0) : 0;
                 gearValue = total[stat];
 
                 components.push(React.DOM.dl({
@@ -323,6 +438,12 @@ App.viewport = React.createClass({
             pane: 'gear',
             slot: '',
             gear: nextGear
+        });
+    },
+
+    handleClickOnRace: function (race, event) {
+        this.setState({
+            race: race
         });
     },
 

@@ -24,6 +24,26 @@ body {
   margin: 0px;
   overflow: hidden;
 }
+h2 {
+  margin: 0px;
+}
+ul {
+  margin: 0px;
+  padding: 0px;
+}
+dl {
+  margin: 0px;
+}
+dd {
+  margin: 0px;
+}
+/* FRAMEWORK ELEMENTS */
+.viewport {
+  align-items: stretch;
+  display: flex;
+  flex: 0 0 100%;
+  overflow: hidden;
+}
 header {
   align-items: center;
   background-color: #e9eef1;
@@ -41,13 +61,6 @@ header {
   cursor: pointer;
   font-size: 1.3rem;
   text-transform: uppercase;
-}
-/* FRAMEWORK ELEMENTS */
-.viewport {
-  align-items: stretch;
-  display: flex;
-  flex: 0 0 100%;
-  overflow: hidden;
 }
 article {
   align-items: stretch;
@@ -71,6 +84,13 @@ article.active-pane-slot {
   flex: 0 0 50%;
   overflow-y: auto;
   padding: 1rem;
+}
+.pane-title {
+  font-size: 2rem;
+  font-weight: 600;
+  padding: 0.6rem 1rem 1.6rem;
+  text-align: center;
+  text-transform: capitalize;
 }
 /* HOME PANE */
 .pane-home {
@@ -133,10 +153,6 @@ article.active-pane-slot {
 .job::after {
   transform: rotate(-120deg);
   -webkit-transform: rotate(-120deg);
-}
-.job .before,
-.job .after {
-  display: none;
 }
 .job .before .image,
 .job .after .image {
@@ -392,23 +408,23 @@ article.active-pane-slot {
   -webkit-transform: rotate(-22.5deg);
 }
 .job .job-icon-sch {
-  border-top: 2px solid #4d4e53;
-  left: 23px;
+  border-top: 0.2rem solid #4d4e53;
+  left: 2.3rem;
   overflow: visible;
   top: 0.8rem;
-  width: 14px;
+  width: 1.4rem;
 }
 .job .job-icon-sch::before,
 .job .job-icon-sch::after {
   border: 2px solid #4d4e53;
-  border-radius: 14px;
-  height: 14px;
-  left: -8px;
-  top: -2px;
-  width: 14px;
+  border-radius: 1.4rem;
+  height: 1.4rem;
+  left: -0.8rem;
+  top: -0.2rem;
+  width: 1.4rem;
 }
 .job .job-icon-sch::after {
-  left: 8px;
+  left: 0.8rem;
 }
 .job .job-icon-sch span::before,
 .job .job-icon-sch span::after {
@@ -417,17 +433,21 @@ article.active-pane-slot {
   -moz-box-sizing: border-box;
   content: "";
   display: block;
-  height: 4px;
-  left: -8px;
+  height: 0.4rem;
+  left: -0.8rem;
   position: absolute;
-  top: -2px;
-  width: 6px;
+  top: -0.2rem;
+  width: 0.6rem;
   z-index: 1;
 }
 .job .job-icon-sch span::after {
-  left: 16px;
+  left: 1.6rem;
 }
 /* STAT PANE */
+.stats {
+  border-bottom: 0.3rem solid #e9eef1;
+  margin-bottom: 2rem;
+}
 .stat {
   background-color: #f4f7f8;
   border-bottom: 1px solid #fff;
@@ -442,19 +462,38 @@ article.active-pane-slot {
 }
 .stat-label {
   flex: 0 0 40%;
-  padding: 1.6rem;
+  padding: 1rem 1.6rem;
   text-transform: capitalize;
 }
 .stat-value {
   flex: 1 1 50%;
   margin: 0px;
-  padding: 1.6rem;
+  padding: 1rem 1.6rem;
   text-align: center;
+}
+.races {
+  display: inline-block;
+}
+.races .race {
+  background-color: #f4f7f8;
+  border-color: #cdcdcd;
+  border-style: solid;
+  border-width: 0px 0.1rem 0.1rem;
+  font-size: 1.4rem;
+  font-weight: 400;
+  padding: 0.7rem 2rem 0.7rem 1rem;
+}
+.races .race:nth-of-type(1) {
+  border-top-width: 0.1rem;
+}
+.races .race.active {
+  background-color: #ffe6cc;
 }
 /* GEAR PANE */
 .slot {
   align-items: center;
   border: 1px dashed #cdcdcd;
+  cursor: pointer;
   display: flex;
   margin-bottom: 1rem;
   min-height: 5rem;
@@ -488,8 +527,7 @@ article.active-pane-slot {
   text-transform: uppercase;
 }
 .slot .slot-item-image {
-  background-image: linear-gradient(135deg, #dcdcdc, #bebebe);
-  border: 1px dashed #cdcdcd;
+  background-color: #333;
   border-radius: 0.3rem;
   display: none;
   height: 4rem;
@@ -501,6 +539,8 @@ article.active-pane-slot {
 .slot.slot-filled {
   background-color: #f4f7f8;
   border-style: solid;
+  border-width: 0px 0px 0px 0.3rem;
+  box-shadow: inset -0.1rem -0.1rem rgba(77,78,83,0.1);
 }
 .slot.slot-filled span {
   display: block;
@@ -515,14 +555,125 @@ article.active-pane-slot {
   border-color: #cdcdcd;
 }
 .slot.slot-scarce {
-  background-image: linear-gradient(rgba(192,255,192,0.15), rgba(192,255,192,0.25));
   border-color: #c0ffc0;
 }
 .slot.slot-rare {
-  background-image: linear-gradient(rgba(89,144,255,0.15), rgba(89,144,255,0.25));
   border-color: #5990ff;
 }
 .slot.slot-relic {
-  background-image: linear-gradient(rgba(179,140,255,0.15), rgba(179,140,255,0.25));
   border-color: #b38cff;
+}
+.slot.active.slot-scarce {
+  background-image: linear-gradient(90deg, rgba(192,255,192,0.2), rgba(192,255,192,0.2));
+}
+.slot.active.slot-rare {
+  background-image: linear-gradient(90deg, rgba(89,144,255,0.2), rgba(89,144,255,0.2));
+}
+.slot.active.slot-relic {
+  background-image: linear-gradient(90deg, rgba(179,140,255,0.2), rgba(179,140,255,0.2));
+}
+/* ITEMS PANE */
+.item {
+  background-color: #e9eef1;
+  border-left: 0.3rem solid #cdcdcd;
+  box-shadow: inset -0.1rem -0.1rem rgba(77,78,83,0.1);
+  cursor: pointer;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  position: relative;
+}
+.item.item-scarce {
+  border-color: #c0ffc0;
+}
+.item.item-rare {
+  border-color: #5990ff;
+}
+.item.item-relic {
+  border-color: #b38cff;
+}
+.item.active.item-scarce {
+  background-image: linear-gradient(90deg, rgba(192,255,192,0.2), rgba(192,255,192,0.2));
+}
+.item.active.item-rare {
+  background-image: linear-gradient(90deg, rgba(89,144,255,0.2), rgba(89,144,255,0.2));
+}
+.item.active.item-relic {
+  background-image: linear-gradient(90deg, rgba(179,140,255,0.2), rgba(179,140,255,0.2));
+}
+.item-image {
+  background-color: #333;
+  border-radius: 0.6rem;
+  float: left;
+  height: 6.4rem;
+  margin: 0px 1rem 1rem 0px;
+  overflow: hidden;
+  padding-top: 6.4rem;
+  width: 6.4rem;
+}
+.item-name {
+  font-weight: 400;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+}
+.item-ilvl {
+  display: flex;
+  font-size: 1.4rem;
+}
+.item-ilvl span {
+  margin-right: 1rem;
+}
+.item-stats {
+  clear: left;
+  display: flex;
+  flex-wrap: wrap;
+}
+.item-stats .item-stat {
+  flex: 1 0 auto;
+  padding-top: 0.5rem;
+}
+.item-stats .item-stat.major {
+  align-items: flex-end;
+  border-color: #cdcdcd;
+  border-style: solid;
+  border-width: 0.1rem 0px;
+  display: flex;
+  flex: 1 0 50%;
+  justify-content: center;
+  padding: 1rem 0px;
+}
+.item-stats .item-stat.major .item-stat-label,
+.item-stats .item-stat.major .item-stat-value {
+  padding: 0px 1rem;
+}
+.item-stats .item-stat.item-stat-magic-damage,
+.item-stats .item-stat.item-stat-dps {
+  display: none;
+}
+.item-stats .item-stat.item-stat-physical-damage,
+.item-stats .item-stat.item-stat-magic-damage,
+.item-stats .item-stat.item-stat-auto-attack,
+.item-stats .item-stat.item-stat-delay {
+  flex: 1 0 33%;
+}
+.item-stats .item-stat-label {
+  font-size: 1.4rem;
+  padding: 0.5rem 0px;
+  text-align: center;
+  text-transform: capitalize;
+}
+.item-stats .item-stat-value {
+  font-weight: 400;
+  text-align: center;
+}
+.item-stats.item-stats-whm .item-stat-physical-damage,
+.item-stats.item-stats-blm .item-stat-physical-damage,
+.item-stats.item-stats-smn .item-stat-physical-damage,
+.item-stats.item-stats-sch .item-stat-physical-damage {
+  display: none;
+}
+.item-stats.item-stats-whm .item-stat-magic-damage,
+.item-stats.item-stats-blm .item-stat-magic-damage,
+.item-stats.item-stats-smn .item-stat-magic-damage,
+.item-stats.item-stats-sch .item-stat-magic-damage {
+  display: flex;
 }

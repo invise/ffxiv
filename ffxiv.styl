@@ -25,15 +25,17 @@ $color-ichi = rgb(244, 247, 248)
 $color-ni = rgb(233, 238, 241)
 
 $color-icon = rgb(77, 78, 83)
+$color-selected = rgb(255, 230, 204)
 $color-text = rgb(77, 78, 83)
 
 $color-border = rgb(205, 205, 205)
 $color-header = $color-ni
 $color-pane = rgb(255, 255, 255)
+$color-image = rgb(51, 51, 51)
 
-$color-scarce = #c0ffc0
+$color-scarce = rgb(192, 255, 192)
 $color-rare = rgb(89, 144, 255)
-$color-relic = #b38cff
+$color-relic = rgb(179, 140, 255)
 
 /* GENERIC ELEMENTS */
 
@@ -59,6 +61,27 @@ body
     margin: 0px
     overflow: hidden
 
+h2
+    margin: 0px
+
+ul
+    margin: 0px
+    padding: 0px
+
+dl
+    margin: 0px
+
+dd
+    margin: 0px
+
+/* FRAMEWORK ELEMENTS */
+
+.viewport
+    align-items: stretch
+    display: flex
+    flex: 0 0 100%
+    overflow: hidden
+
 header
     align-items: center
     background-color: $color-header
@@ -76,14 +99,6 @@ header
     cursor: pointer
     font-size: 1.3rem
     text-transform: uppercase
-
-/* FRAMEWORK ELEMENTS */
-
-.viewport
-    align-items: stretch
-    display: flex
-    flex: 0 0 100%
-    overflow: hidden
 
 article
     align-items: stretch
@@ -105,6 +120,13 @@ article
     flex: 0 0 50%
     overflow-y: auto
     padding: 1rem
+
+.pane-title
+    font-size: 2rem
+    font-weight: 600
+    padding: 0.6rem 1rem 1.6rem
+    text-align: center
+    text-transform: capitalize
 
 /* HOME PANE */
 
@@ -168,8 +190,6 @@ article
 
     .before,
     .after
-        display: none
-
         .image
             background-attachment: scroll
             background-position: 50% 50%
@@ -199,6 +219,10 @@ article
 
 /* STAT PANE */
 
+.stats
+    border-bottom: 0.3rem solid $color-ni
+    margin-bottom: 2rem
+
 .stat
     background-color: $color-ichi
     border-bottom: 1px solid rgb(255, 255, 255)
@@ -214,20 +238,39 @@ article
 
 .stat-label
     flex: 0 0 40%
-    padding: 1.6rem
+    padding: 1rem 1.6rem
     text-transform: capitalize
 
 .stat-value
     flex: 1 1 50%
     margin: 0px
-    padding: 1.6rem
+    padding: 1rem 1.6rem
     text-align: center
+
+.races
+    display: inline-block
+
+    .race
+        background-color: $color-ichi
+        border-color: $color-border
+        border-style: solid
+        border-width: 0px 0.1rem 0.1rem
+        font-size: 1.4rem
+        font-weight: 400
+        padding: 0.7rem 2rem 0.7rem 1rem
+
+        &:nth-of-type(1)
+            border-top-width: 0.1rem
+
+        &.active
+            background-color: $color-selected
 
 /* GEAR PANE */
 
 .slot
     align-items: center
     border: 1px dashed $color-border
+    cursor: pointer
     display: flex
     margin-bottom: 1rem
     min-height: 5rem
@@ -261,8 +304,7 @@ article
         text-transform: uppercase
 
     .slot-item-image
-        background-image: linear-gradient(135deg, rgb(220, 220, 220), rgb(190, 190, 190))
-        border: 1px dashed $color-border
+        background-color: $color-image
         border-radius: 0.3rem
         display: none
         height: 4rem
@@ -274,6 +316,8 @@ article
     &.slot-filled
         background-color: $color-ichi
         border-style: solid
+        border-width: 0px 0px 0px 0.3rem
+        box-shadow inset -0.1rem -0.1rem rgba($color-text, 0.1)
 
         span
             display: block
@@ -288,13 +332,126 @@ article
         border-color: $color-border
 
     &.slot-scarce
-        background-image: linear-gradient(rgba($color-scarce, 0.15), rgba($color-scarce, 0.25))
         border-color: $color-scarce
 
     &.slot-rare
-        background-image: linear-gradient(rgba($color-rare, 0.15), rgba($color-rare, 0.25))
         border-color: $color-rare
 
     &.slot-relic
-        background-image: linear-gradient(rgba($color-relic, 0.15), rgba($color-relic, 0.25))
         border-color: $color-relic
+
+    &.active
+        &.slot-scarce
+            background-image: linear-gradient(90deg, rgba($color-scarce, 0.2), rgba($color-scarce, 0.2))
+
+        &.slot-rare
+            background-image: linear-gradient(90deg, rgba($color-rare, 0.2), rgba($color-rare, 0.2))
+
+        &.slot-relic
+            background-image: linear-gradient(90deg, rgba($color-relic, 0.2), rgba($color-relic, 0.2))
+
+/* ITEMS PANE */
+
+.item
+    background-color: $color-ni
+    border-left: 0.3rem solid $color-border
+    box-shadow inset -0.1rem -0.1rem rgba($color-text, 0.1)
+    cursor: pointer
+    margin-bottom: 1rem
+    padding: 1rem
+    position: relative
+
+    &.item-scarce
+        border-color: $color-scarce
+
+    &.item-rare
+        border-color: $color-rare
+
+    &.item-relic
+        border-color: $color-relic
+
+    &.active
+        &.item-scarce
+            background-image: linear-gradient(90deg, rgba($color-scarce, 0.2), rgba($color-scarce, 0.2))
+
+        &.item-rare
+            background-image: linear-gradient(90deg, rgba($color-rare, 0.2), rgba($color-rare, 0.2))
+
+        &.item-relic
+            background-image: linear-gradient(90deg, rgba($color-relic, 0.2), rgba($color-relic, 0.2))
+
+
+.item-image
+    background-color: $color-image
+    border-radius: 0.6rem
+    float: left
+    height: 6.4rem
+    margin: 0px 1rem 1rem 0px
+    overflow: hidden
+    padding-top: 6.4rem
+    width: 6.4rem
+
+.item-name
+    font-weight: 400
+    margin-bottom: 1rem
+    margin-top: 0.5rem
+
+.item-ilvl
+    display: flex
+    font-size: 1.4rem
+
+    span
+        margin-right: 1rem
+
+.item-stats
+    clear: left
+    display: flex
+    flex-wrap: wrap
+
+    .item-stat
+        flex: 1 0 auto
+        padding-top: 0.5rem
+
+        &.major
+            align-items: flex-end
+            border-color: $color-border
+            border-style: solid
+            border-width: 0.1rem 0px
+            display: flex
+            flex: 1 0 50%
+            justify-content: center
+            padding: 1rem 0px
+
+            .item-stat-label,
+            .item-stat-value
+                padding: 0px 1rem
+
+        &.item-stat-magic-damage,
+        &.item-stat-dps
+            display: none
+
+        &.item-stat-physical-damage,
+        &.item-stat-magic-damage,
+        &.item-stat-auto-attack,
+        &.item-stat-delay
+            flex: 1 0 33%
+
+    .item-stat-label
+        font-size: 1.4rem
+        padding: 0.5rem 0px
+        text-align: center
+        text-transform: capitalize
+
+    .item-stat-value
+        font-weight: 400
+        text-align: center
+
+    &.item-stats-whm,
+    &.item-stats-blm,
+    &.item-stats-smn,
+    &.item-stats-sch
+        .item-stat-physical-damage
+            display: none
+
+        .item-stat-magic-damage
+            display: flex
