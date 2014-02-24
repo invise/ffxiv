@@ -28,7 +28,7 @@ $color-icon = rgb(77, 78, 83)
 $color-selected = rgb(255, 230, 204)
 $color-text = rgb(77, 78, 83)
 
-$color-border = rgb(205, 205, 205)
+$color-border = rgba($color-text, 0.1)
 $color-header = $color-ni
 $color-pane = rgb(255, 255, 255)
 $color-image = rgb(51, 51, 51)
@@ -136,18 +136,19 @@ article
     flex: 0 0 100%
     justify-content: center
 
-    .jobs
-        display: flex
-        flex-wrap: wrap
-        padding: 2rem
-        position: relative
-        width: 40rem
+.jobs
+    display: flex
+    flex-wrap: wrap
+    padding: 2rem
+    position: relative
+    width: 40rem
 
 .job
     align-content: center
     align-items: center
     background-color: $color-ni
     border-radius: 0.3rem
+    box-shadow: inset -0.1rem 0px rgba($color-text, 0.1)
     cursor: pointer
     display: flex
     flex-wrap: wrap
@@ -159,21 +160,11 @@ article
     text-align: center
     width: 12rem
 
-    .job-inner
-        font-size: 1.5rem
-        font-weight: 400
-        height: 5rem
-        line-height: 2rem
-        padding-top: 3rem
-        position: relative
-        text-transform: uppercase
-        width: 6rem
-        z-index: 1
-
     &::before,
     &::after
         background-color: $color-ni
         border-radius: 0.3rem
+        box-shadow: inset -0.1rem 0px rgba($color-text, 0.1)
         box-sizing: border-box
         content: ""
         display: block
@@ -186,6 +177,7 @@ article
         width: 12rem
 
     &::after
+        box-shadow: inset 0.1rem 0px rgba($color-text, 0.1)
         transform: rotate(-120deg)
 
     .before,
@@ -214,6 +206,17 @@ article
 
     &:nth-of-type(5n-2)
         margin-right: 6rem
+
+.job-inner
+    font-size: 1.5rem
+    font-weight: 400
+    height: 5rem
+    line-height: 2rem
+    padding-top: 3rem
+    position: relative
+    text-transform: uppercase
+    width: 6rem
+    z-index: 1
 
 @import 'icons'
 
@@ -247,23 +250,60 @@ article
     padding: 1rem 1.6rem
     text-align: center
 
+.stat-extras
+    display: flex
+
 .races
-    display: inline-block
+    flex: 0 0 20rem
 
-    .race
-        background-color: $color-ichi
-        border-color: $color-border
-        border-style: solid
-        border-width: 0px 0.1rem 0.1rem
-        font-size: 1.4rem
-        font-weight: 400
-        padding: 0.7rem 2rem 0.7rem 1rem
+.race
+    background-color: $color-ichi
+    border-color: $color-border
+    border-style: solid
+    border-width: 0px 0.1rem 0.1rem
+    cursor: pointer
+    font-size: 1.4rem
+    font-weight: 400
+    padding: 0.7rem 1rem 0.7rem 1rem
 
-        &:nth-of-type(1)
-            border-top-width: 0.1rem
+    &:nth-of-type(1)
+        border-top-width: 0.1rem
 
-        &.active
-            background-color: $color-selected
+    &.active
+        background-color: $color-selected
+
+.meals
+    flex: 1 0 auto
+    margin-left: 2rem
+
+.meal
+    align-items: center
+    background-color: $color-ichi
+    border-color: $color-border
+    border-style: solid
+    border-width: 0px 0.1rem 0.1rem
+    cursor: pointer
+    display: flex
+    font-size: 1.4rem
+
+    &:nth-of-type(1)
+        border-top-width: 0.1rem
+
+    &.active
+        background-color: $color-selected
+
+.meal-label
+    flex: 1 0 50%
+    font-weight: 400
+    padding: 0.7rem 1rem
+
+.meal-value
+    flex: 1 0 16%
+    font-size: 1.3rem
+    line-height: 1.4rem;
+    padding: 0.7rem
+    text-align: center
+    text-transform: uppercase
 
 /* GEAR PANE */
 
@@ -304,14 +344,28 @@ article
         text-transform: uppercase
 
     .slot-item-image
-        background-color: $color-image
-        border-radius: 0.3rem
+        background: none no-repeat scroll 50% 50% transparent
+        background-size: cover
+        border-radius: 0.4rem
         display: none
         height: 4rem
-        margin-left: 1rem
+        margin-right: 1rem
         overflow: hidden
         padding-left: 4rem
+        position: relative
         width: 4rem
+
+        &::after
+            background: url('/images/reflection_frame_128.png') no-repeat scroll 50% 50% transparent
+            background-size: cover
+            box-sizing: border-box
+            content: ""
+            display: block
+            height: 4.8rem
+            left: -0.4rem
+            position: absolute
+            top: -0.2rem
+            width: 4.8rem
 
     &.slot-filled
         background-color: $color-ichi
@@ -382,14 +436,28 @@ article
 
 
 .item-image
-    background-color: $color-image
-    border-radius: 0.6rem
+    background: none no-repeat scroll 50% 50% transparent
+    background-size: cover
+    border-radius: 0.8rem
     float: left
     height: 6.4rem
     margin: 0px 1rem 1rem 0px
     overflow: hidden
     padding-top: 6.4rem
+    position: relative
     width: 6.4rem
+
+    &::after
+        background: url('/images/reflection_frame_128.png') no-repeat scroll 50% 50% transparent
+        background-size: cover
+        box-sizing: border-box
+        content: ""
+        display: block
+        height: 7.6rem
+        left: -0.6rem
+        position: absolute
+        top: -0.3rem
+        width: 7.6rem
 
 .item-name
     font-weight: 400

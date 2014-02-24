@@ -8,10 +8,11 @@ App.viewport = React.createClass({
 
     getInitialState: function () {
         return {
+            gear: this.retrieveGear(this.props.gear),
+            meal: null,
             pane: this.props.job ? 'gear' : 'home',
             race: Constants.races[6],
-            slot: '',
-            gear: this.retrieveGear(this.props.gear)
+            slot: ''
         };
     },
 
@@ -92,8 +93,17 @@ App.viewport = React.createClass({
                                     children: job ? this.generateStats(job, gear) : 'Select a job first.'
                                 }),
                                 React.DOM.div({
-                                    className: 'races',
-                                    children: this.generateRaces()
+                                    className: 'stat-extras',
+                                    children: [
+                                        React.DOM.div({
+                                            className: 'races',
+                                            children: this.generateRaces()
+                                        }),
+                                        React.DOM.div({
+                                            className: 'meals',
+                                            children: this.generateMeals()
+                                        })
+                                    ]
                                 })
                             ]
                         }),
@@ -141,7 +151,17 @@ App.viewport = React.createClass({
 
         items = Constants.items[slot].filter(function (item) {
             return item.all_jobs || (item.jobs && item.jobs.indexOf(job) !== -1);
-        }, this);
+        }, this).sort(function (a, b) {
+            if (a.ilvl > b.ilvl) {
+                return -1;
+            } else if (a.ilvl < b.ilvl) {
+                return 1;
+            } else if (a.nid > b.nid) {
+                return -1;
+            } else {
+                return 1;
+            }
+        });
 
         components = items.map(function (item) {
             var activeItem = gear[slotIndex];
@@ -151,7 +171,10 @@ App.viewport = React.createClass({
                 children: [
                     React.DOM.div({
                         className: 'item-image',
-                        children: 'image'
+                        children: '<image>',
+                        style: {
+                            backgroundImage: "url('/images/" + item.sid + ".png')"
+                        }
                     }),
                     React.DOM.div({
                         className: 'item-name',
@@ -242,6 +265,45 @@ App.viewport = React.createClass({
         return components;
     },
 
+    generateMeals: function () {
+        var meals = Constants.meals;
+        var activeMeal = this.state.meal;
+        var components;
+
+        components = meals.map(function (meal) {
+            return React.DOM.dl({
+                className: 'meal' + (activeMeal && activeMeal.name === meal.name ? ' active' : ''),
+                children: this.generateMealStats(meal),
+                onClick: this.handleClickOnMeal.bind(this, meal)
+            });
+        }, this);
+
+        return components;
+    },
+
+    generateMealStats: function (meal) {
+        var stats = Constants.stats;
+        var bonuses = meal.bonuses;
+        var components = [];
+
+        components.push(React.DOM.dt({
+            className: 'meal-label',
+            children: meal.name
+        }));
+
+        for (bonus in bonuses) {
+            components.push(React.DOM.dd({
+                className: 'meal-value',
+                children: [
+                    (bonuses[bonus].percentage + '% '),
+                    stats[bonus].abbr
+                ]
+            }));
+        }
+
+        return components;
+    },
+
     generateRaces: function () {
         var races = Constants.races;
         var activeRace = this.state.race;
@@ -279,6 +341,13 @@ App.viewport = React.createClass({
                 ].join(''),
                 children: [
                     React.DOM.span({
+                        className: 'slot-item-image',
+                        children: '<image>',
+                        style: {
+                            backgroundImage: item ? "url('/images/" + item.sid + ".png')" : "none"
+                        }
+                    }),
+                    React.DOM.span({
                         className: 'slot-name',
                         children: slot.replace(/_/g, ' ')
                     }),
@@ -293,10 +362,6 @@ App.viewport = React.createClass({
                     React.DOM.span({
                         className: 'slot-item-ilvl',
                         children: (item ? 'ilvl ' + item.ilvl : null)
-                    }),
-                    React.DOM.span({
-                        className: 'slot-item-image',
-                        children: (item ? 'img' : null)
                     })
                 ],
                 onClick: this.handleClickOnSlot.bind(this, slot)
@@ -308,9 +373,11 @@ App.viewport = React.createClass({
 
     generateStats: function (job, gear) {
         var race = this.state.race;
+        var meal = this.state.meal;
         var statMap = Constants.stats;
         var stats = job.stats;
         var bonuses = job.bonuses;
+        var mealBonuses = meal ? meal.bonuses : null;
         var total = {};
         var components;
 
@@ -328,6 +395,10 @@ App.viewport = React.createClass({
                 React.DOM.dd({
                     className: 'stat-value stat-value-from-gear',
                     children: 'gear'
+                }),
+                React.DOM.dd({
+                    className: 'stat-value stat-value-from-meal',
+                    children: 'meal'
                 }),
                 React.DOM.dd({
                     className: 'stat-value stat-value-from-all',
@@ -356,12 +427,18 @@ App.viewport = React.createClass({
 
         for (stat in total) {
             var baseStat = statMap[stat];
+            var mealStat = mealBonuses ? mealBonuses[stat] : null;
             var characterValue;
             var gearValue;
 
             if (total.hasOwnProperty(stat)) {
                 characterValue = baseStat ? baseStat.base + (bonuses[stat] || 0) + (race.bonuses[stat] || 0) : 0;
                 gearValue = total[stat];
+                mealValue = Math.round((characterValue + gearValue) * (mealStat ? mealStat.percentage : 0) * 0.01);
+
+                if (mealStat && mealValue > mealStat.maximum) {
+                    mealValue = mealStat.maximum;
+                }
 
                 components.push(React.DOM.dl({
                     className: 'stat',
@@ -379,8 +456,12 @@ App.viewport = React.createClass({
                             children: gearValue
                         }),
                         React.DOM.dd({
+                            className: 'stat-value stat-value-from-meal',
+                            children: mealValue
+                        }),
+                        React.DOM.dd({
                             className: 'stat-value stat-value-from-all',
-                            children: characterValue + gearValue
+                            children: characterValue + gearValue + mealValue
                         })
                     ]
                 }));
@@ -438,6 +519,18 @@ App.viewport = React.createClass({
             pane: 'gear',
             slot: '',
             gear: nextGear
+        });
+    },
+
+    handleClickOnMeal: function (meal, event) {
+        var prevMeal = this.state.meal;
+
+        if (prevMeal && prevMeal.name === meal.name) {
+            meal = null;
+        }
+
+        this.setState({
+            meal: meal
         });
     },
 
