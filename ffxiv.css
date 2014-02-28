@@ -553,6 +553,7 @@ article.active-pane-slot {
 .slot .slot-item-stats {
   border-right: 1px solid rgba(77,78,83,0.5);
   font-size: 1.3rem;
+  font-weight: 400;
   line-height: 1.6rem;
   text-transform: uppercase;
 }
@@ -572,7 +573,7 @@ article.active-pane-slot {
   border-radius: 0.4rem;
   display: none;
   height: 4rem;
-  margin-right: 1rem;
+  margin-right: 2rem;
   overflow: hidden;
   padding-left: 4rem;
   position: relative;
@@ -681,7 +682,7 @@ article.active-pane-slot {
   width: 7.6rem;
 }
 .item-name {
-  font-weight: 400;
+  font-size: 1.7rem;
   margin-bottom: 1rem;
   margin-top: 0.5rem;
 }
